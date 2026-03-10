@@ -1,0 +1,81 @@
+{
+  "components": [
+    {
+      "name": "camera-1",
+      "api": "rdk:component:camera",
+      "model": "viam-labs:modular-webcam:webcam",
+      "attributes": {},
+      "service_configs": [
+        {
+          "type": "data_manager",
+          "attributes": {
+            "capture_methods": [
+              {
+                "method": "GetImages",
+                "capture_frequency_hz": 0.2,
+                "disabled": true,
+                "additional_params": {}
+              }
+            ]
+          }
+        }
+      ],
+      "disabled": true
+    }
+  ],
+  "services": [
+    {
+      "name": "data_manager-1",
+      "api": "rdk:service:data_manager",
+      "model": "rdk:builtin:builtin",
+      "attributes": {
+        "additional_sync_paths": [],
+        "sync_interval_mins": 0.1,
+        "capture_dir": "",
+        "tags": []
+      }
+    },
+    {
+      "name": "vision-1",
+      "api": "rdk:service:vision",
+      "model": "rdk:builtin:mlmodel",
+      "attributes": {
+        "camera_name": "camera-1",
+        "mlmodel_name": "mlmodel-1",
+        "default_minimum_confidence": 0.55
+      }
+    },
+    {
+      "name": "mlmodel-1",
+      "api": "rdk:service:mlmodel",
+      "model": "viam:mlmodel-tflite:tflite_cpu",
+      "attributes": {
+        "label_path": "${packages.ml_model.Vitamin-bottle-detector}/labels.txt",
+        "package_reference": "c188e7f8-9cea-497d-8fd6-c40d03f49c2d/Vitamin-bottle-detector",
+        "model_path": "${packages.ml_model.Vitamin-bottle-detector}/Vitamin-bottle-detector.tflite"
+      }
+    }
+  ],
+  "modules": [
+    {
+      "type": "registry",
+      "name": "viam-labs_modular-webcam",
+      "module_id": "viam-labs:modular-webcam",
+      "version": "latest"
+    },
+    {
+      "type": "registry",
+      "name": "viam_tflite_cpu",
+      "module_id": "viam:tflite_cpu",
+      "version": "latest"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Vitamin-bottle-detector",
+      "package": "c188e7f8-9cea-497d-8fd6-c40d03f49c2d/Vitamin-bottle-detector",
+      "type": "ml_model",
+      "version": "2026-03-09T16-30-52"
+    }
+  ]
+}
